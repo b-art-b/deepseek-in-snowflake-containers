@@ -1,0 +1,20 @@
+version: "3.7"
+
+services:
+  deepseek-in-snowflake:
+    platform: linux/amd64
+    build:
+      context: ./deepseek-in-snowflake
+      dockerfile: Dockerfile
+    image: "deepseek-in-snowflake:dev"
+    ports:
+      - "11434:11434"
+      - "8080:80"
+    volumes:
+      - ./mounted_dirs/ollama:/root/.ollama
+
+  deepseek-in-snowflake-sf:
+    depends_on:
+      - deepseek-in-snowflake
+    extends: deepseek-in-snowflake
+    image: "${SF_REPO}/deepseek-in-snowflake:dev"

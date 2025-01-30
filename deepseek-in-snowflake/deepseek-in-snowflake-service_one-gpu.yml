@@ -1,0 +1,27 @@
+spec:
+  containers:
+    - name: deepseek
+      image: /deepseek_db/data_schema/deepseek_repository/deepseek-in-snowflake:dev
+      volumeMounts:
+        - name: ollama
+          mountPath: /root/.ollama
+      readinessProbe:
+        port: 11434
+        path: /
+      resources:
+        requests:
+          nvidia.com/gpu: 1
+        limits:
+          nvidia.com/gpu: 1
+  endpoints:
+    - name: deepseek
+      port: 11434
+      public: true
+    - name: streamlit
+      port: 80
+      public: true
+  volumes:
+    - name: ollama
+      source: "@ollama"
+  networkPolicyConfig:
+    allowInternetEgress: true
